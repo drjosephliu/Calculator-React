@@ -115,12 +115,20 @@ export default class App extends Component {
     // Finds and truncates the last number in the calc string
     const lastOperator = /(?:\-|\+|\/|\*)(?=[^\-\+\/\*]*$)/;
     const currentCalc = this.state.calc;
-    const truncateCalc = currentCalc.slice(0, currentCalc.match(lastOperator).index + 1);
+    if (!currentCalc.match(lastOperator)) {
+      this.clearAll();
+    }
+    else {
+      const truncateCalc = currentCalc.slice(0, currentCalc.match(lastOperator).index + 1);
 
-    this.setState({
-      display: '',
-      calc: truncateCalc
-    });
+      this.setState({
+        display: '',
+        calc: truncateCalc
+      });
+
+    }
+
+
   }
 
   render() {
