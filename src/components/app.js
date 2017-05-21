@@ -113,11 +113,11 @@ export default class App extends Component {
 
   clearEntry() {
     // Finds and truncates the last number in the calc string
-    const lastOperator = /(?:\-|\+|\/|\*)(?=[^\-\+\/\*]*$)/;
+    const findLastOperator = /(?:\-|\+|\/|\*)(?=[^\-\+\/\*]*$)/;
     const currentCalc = this.state.calc;
     const last = _.last(currentCalc);
 
-    if (!currentCalc.match(lastOperator)) {
+    if (!currentCalc.match(findLastOperator)) {
       this.clearAll();
     }
     else if (isNaN(last) && last != '.') {
@@ -128,8 +128,10 @@ export default class App extends Component {
       });
     }
     else {
-      const truncateCalc = currentCalc.slice(0, currentCalc.match(lastOperator).index + 1);
-
+      const truncateCalc = currentCalc.slice(0, currentCalc.match(findLastOperator).index + 1);
+      const lastOperator = _.last(truncateCalc);
+      document.getElementById(lastOperator).focus();
+      
       this.setState({
         display: '',
         calc: truncateCalc
@@ -172,10 +174,10 @@ export default class App extends Component {
             </div>
 
             <div className='right-column'>
-              <button value='/' onClick={this.renderOperator}>&divide;</button>
-              <button value='*' onClick={this.renderOperator}>x</button>
-              <button value='-' onClick={this.renderOperator}>-</button>
-              <button value='+' onClick={this.renderOperator}>+</button>
+              <button value='/' id='/' onClick={this.renderOperator}>&divide;</button>
+              <button value='*' id='*' onClick={this.renderOperator}>x</button>
+              <button value='-' id='-' onClick={this.renderOperator}>-</button>
+              <button value='+' id='+' onClick={this.renderOperator}>+</button>
               <button value='=' onClick={this.renderCalc}>=</button>
             </div>
           </div>
