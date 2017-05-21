@@ -1,1 +1,118 @@
+$border-color: #cfd1d7;
+$right-column-bg: #B51D0A;
+$right-column-text: white;
+$key-bg: #4b4345;
+$top-color: #2f3131;
+$display-color: #000b29;
 
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  color: white;
+  background-color: #f3ebdd;
+}
+
+.container {
+  margin: 10% auto 5%;
+  padding: 0;
+  // border: 1px solid $border-color;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  height: 350px;
+  box-sizing: content-box;
+  background-color: $top-color;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+}
+
+#output {
+  margin: 35px 0 0 0;
+  padding-right: 8px;
+  width: 100%;
+  height: 65px;
+  border-color: $border-color;
+  border-style: solid;
+  border-width: 1px 0 1px 0;
+  background-color: $border-color;
+  font-size: 3em;
+  color: $display-color;
+}
+
+.keypad {
+  display: flex;
+}
+
+button {
+  border: 0;
+  width: 70px;
+  height: 50px;
+  background-color: $key-bg;
+  outline-style: none;
+  font-size: 1.25em;
+  &:active {
+    opacity: 0.5;
+  }
+}
+
+.left-three-columns {
+  display: flex;
+  flex-direction: column;
+}
+
+.even-keys {
+  display: flex;
+  flex-wrap: wrap;
+  width: 210px;
+  height: 200px;
+  button {
+    border-color: $border-color;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+  }
+}
+
+.bottom-row {
+  display: flex;
+  width: 210px;
+  height: 50px;
+  #zerobutton {
+    width: 140px;
+    border-radius: 0 0 0 8px;
+  }
+  button {
+    border-color: $border-color;
+    border-style: solid;
+    border-width: 0 1px 0 0;
+  }
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  width: 70px;
+  height: 250px;
+  button {
+    border-color: $border-color;
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    background-color: $right-column-bg;
+    color: $right-column-text;
+    &:focus {
+      border: 2px solid black;
+    }
+  }
+  button:last-child {
+    border: 0;
+    border-radius: 0 0 8px 0;
+  }
+}
+
+footer h4 {
+  color: $key-bg;
+}
