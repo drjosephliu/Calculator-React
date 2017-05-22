@@ -10,7 +10,8 @@ export default class App extends Component {
     super(props);
     this.state = {
       display: '',
-      calc: ''
+      calc: '',
+      equals: false
     };
     this.renderNumber = this.renderNumber.bind(this);
     this.renderOperator = this.renderOperator.bind(this);
@@ -37,7 +38,7 @@ export default class App extends Component {
         console.log('Error! Invalid input');
       }
     }
-    else if (currentNum.length >= 11 && !isNaN(last)) {
+    else if (currentNum.length >= 11 && !isNaN(last) && !this.state.equals) {
       console.log('Error! Number too long');
     }
     else if (value == '.' && isNaN(last) && last != '.') {
@@ -52,6 +53,13 @@ export default class App extends Component {
         calc: currentCalc + value
       })
     }
+    else if (this.state.equals) {
+      this.setState({
+        display: value,
+        calc: value,
+        equals: false
+      });
+    }
     else {
       this.setState({
         display: currentNum + value,
@@ -64,6 +72,7 @@ export default class App extends Component {
     const { value } = event.target;
     const currentCalc = this.state.calc;
     const last = _.last(this.state.calc);
+    const findLastOperator = /(?:\-|\+|\/|\*)(?=[^\-\+\/\*]*$)/;
 
     //If display is empty, assume it is zero
     if (!this.state.display && !currentCalc) {
@@ -77,6 +86,13 @@ export default class App extends Component {
         calc: currentCalc.slice(0, -1) + value
       });
     }
+    else if (currentCalc.match(findLastOperator) && !isNaN(last)) {
+      this.renderCalc();
+      const newCalc = this.state.calc;
+      this.setState({
+        calc: newCalc + value
+      });
+    }
     else {
       this.setState({
         calc: currentCalc + value
@@ -85,23 +101,46 @@ export default class App extends Component {
   }
 
   renderCalc() {
-    // var total = _.truncate(eval(this.state.calc), {
-    //   'length': 11,
-    //   'omission': ''
-    // });
     const total = eval(this.state.calc);
     var totalPrecise;
-    if (total <= 1) {
-      totalPrecise = math.format(total, { precision: 9 });
+
+    if (total > 1) {
+      totalPrecise = math.format(total, { precision: 10 });
+
+      this.setState({
+        display: totalPrecise,
+        calc: totalPrecise,
+        equals: true
+      });
+    }
+    else if (total == 0) {
+      totalPrecise = total;
+
+      this.setState({
+        display: totalPrecise,
+        calc: '',
+        equals: true
+      });
+    }
+    else if (total == Infinity || total == -Infinity) {
+      totalPrecise = total;
+
+      this.setState({
+        display: totalPrecise,
+        calc: '',
+        equals: true
+      });
     }
     else {
-      totalPrecise = math.format(total, { precision: 10 });
+      totalPrecise = math.format(total, { precision: 9 });
+
+      this.setState({
+        display: totalPrecise,
+        calc: totalPrecise,
+        equals: true
+      });
     }
 
-    this.setState({
-      display: totalPrecise,
-      calc: totalPrecise
-    });
   }
 
   clearAll() {
@@ -131,7 +170,7 @@ export default class App extends Component {
       const truncateCalc = currentCalc.slice(0, currentCalc.match(findLastOperator).index + 1);
       const lastOperator = _.last(truncateCalc);
       document.getElementById(lastOperator).focus();
-      
+
       this.setState({
         display: '',
         calc: truncateCalc
@@ -144,6 +183,7 @@ export default class App extends Component {
 
   render() {
     console.log('Calc:', this.state.calc);
+
     return (
       <div>
         <div className="container">
