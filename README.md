@@ -1,4 +1,4 @@
-# Build a JavaScript Calculator
+# Build a JavaScript Calculator ([Demo](https://calc-react-drhectapus.herokuapp.com/))
 
 Front-end project from FreeCodeCamp.
 
